@@ -20,7 +20,7 @@ services:
         condition: always
 
 volumes:
-  web_volume:
+  webVolume:
 
 networks:
   mainNetwork:
