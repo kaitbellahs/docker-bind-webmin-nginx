@@ -1,4 +1,4 @@
-version: "3.8"
+version: "3"
 
 services:
   web:
@@ -11,11 +11,7 @@ services:
       - "80:80/tcp"
       - "443:443/tcp"
     volumes:
-      - type: volume
-        source: webVolume
-        target: /data
-        volume:
-          nocopy: true
+      - webVolume:/data
     networks:
       - mainNetwork
     deploy:
