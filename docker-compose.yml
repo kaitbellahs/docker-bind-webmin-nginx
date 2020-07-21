@@ -1,4 +1,4 @@
-version: "3"
+version: "3.8"
 
 services:
   web:
@@ -12,7 +12,7 @@ services:
       - "443:443/tcp"
     volumes:
       - type: volume
-        source: web_volume
+        source: webVolume
         target: /data
         volume:
           nocopy: true
@@ -22,5 +22,9 @@ services:
       replicas: 1
       restart_policy:
         condition: always
+
 volumes:
   web_volume:
+
+networks:
+  mainNetwork:
