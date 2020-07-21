@@ -27,12 +27,13 @@ file_env 'ROOT_PASSWORD'
 
 ROOT_PASSWORD=${ROOT_PASSWORD:-password}
 WEBMIN_ENABLED=${WEBMIN_ENABLED:-true}
-WEBMIN_INIT_SSL_ENABLED=${WEBMIN_INIT_SSL_ENABLED:-true}
+WEBMIN_INIT_SSL_ENABLED=${WEBMIN_INIT_SSL_ENABLED:-false}
 WEBMIN_INIT_REDIRECT_PORT=${WEBMIN_INIT_REDIRECT_PORT:-10000}
 WEBMIN_INIT_REFERERS=${WEBMIN_INIT_REFERERS:-NONE}
 
 BIND_DATA_DIR=${DATA_DIR}/bind
 WEBMIN_DATA_DIR=${DATA_DIR}/webmin
+NGINX_DATA_DIR=${DATA_DIR}/nginx
 
 create_bind_data_dir() {
   mkdir -p ${BIND_DATA_DIR}
@@ -65,6 +66,19 @@ create_webmin_data_dir() {
   fi
   rm -rf /etc/webmin
   ln -sf ${WEBMIN_DATA_DIR}/etc /etc/webmin
+}
+
+create_nginx_data_dir() {
+  mkdir -p ${NGINX_DATA_DIR}
+  chmod -R 0755 ${NGINX_DATA_DIR}
+  chown -R root:root ${NGINX_DATA_DIR}
+
+  # populate the default nginx configuration if it does not exist
+  if [ ! -d ${NGINX_DATA_DIR}/etc ]; then
+    mv /etc/nginx ${NGINX_DATA_DIR}/etc
+  fi
+  rm -rf /etc/nginx
+  ln -sf ${WEBMIN_DATA_DIR}/etc /etc/nginx
 }
 
 disable_webmin_ssl() {
@@ -125,6 +139,7 @@ fi
 if [[ -z ${1} ]]; then
   if [ "${WEBMIN_ENABLED}" == "true" ]; then
     create_webmin_data_dir
+    create_nginx_data_dir
     first_init
     set_root_passwd
     echo "Starting webmin..."
