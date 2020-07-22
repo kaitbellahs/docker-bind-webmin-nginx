@@ -2,8 +2,7 @@ version: "3"
 
 services:
   web:
-    image: "khalid:tian_web"
-    build: .
+    image: "khalidait/khalid:tian_web"
     ports:
       - "53:53/udp"
       - "53:53/tcp"
@@ -16,8 +15,6 @@ services:
       - mainNetwork
     deploy:
       replicas: 1
-      restart_policy:
-        condition: always
 
 volumes:
   webVolume:
