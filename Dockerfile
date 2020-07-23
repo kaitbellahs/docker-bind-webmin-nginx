@@ -2,7 +2,7 @@ FROM ubuntu:focal AS add-apt-repositories
 
 RUN apt-get update \
     && apt-get -y upgrade \
-    && apt-get install apt-utils debconf \
+    && apt-get install apt-utils \
     && DEBIAN_FRONTEND=noninteractive apt-get install -y gnupg \
     && apt-key adv --fetch-keys http://www.webmin.com/jcameron-key.asc \
     && echo "deb http://download.webmin.com/download/repository sarge contrib" >> /etc/apt/sources.list \
