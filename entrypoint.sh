@@ -79,29 +79,27 @@ create_nginx_data_dir() {
   fi
   rm -rf /etc/nginx
   ln -sf ${NGINX_DATA_DIR}/etc /etc/nginx
-  chmod -R 0775 ${NGINX_DATA_DIR}
-  chown -R ${NGINX_USER}:${NGINX_USER} ${NGINX_DATA_DIR}
 
   if [ ! -d ${NGINX_DATA_DIR}/lib ]; then
-    mkdir -p ${NGINX_DATA_DIR}/lib
-    chown ${NGINX_USER}:${NGINX_USER} ${NGINX_DATA_DIR}/lib
+    mv /var/lib/nginx ${NGINX_DATA_DIR}/lib
   fi
   rm -rf /var/lib/nginx
   ln -sf ${NGINX_DATA_DIR}/lib /var/lib/nginx
 
   if [ ! -d ${NGINX_DATA_DIR}/share ]; then
-    mkdir -p ${NGINX_DATA_DIR}/share
-    chown ${NGINX_USER}:${NGINX_USER} ${NGINX_DATA_DIR}/share
+    mv /usr/share/nginx ${NGINX_DATA_DIR}/share
   fi
   rm -rf /usr/share/nginx
   ln -sf ${NGINX_DATA_DIR}/share /usr/share/nginx
 
   if [ ! -d ${NGINX_DATA_DIR}/log ]; then
-    mkdir -p ${NGINX_DATA_DIR}/log
-    chown ${NGINX_USER}:${NGINX_USER} ${NGINX_DATA_DIR}/log
+    mv /var/log/nginx ${NGINX_DATA_DIR}/log
   fi
   rm -rf /var/log/nginx
   ln -sf ${NGINX_DATA_DIR}/log /var/log/nginx
+
+  chmod -R 0775 ${NGINX_DATA_DIR}
+  chown -R ${NGINX_USER}:${NGINX_USER} ${NGINX_DATA_DIR}
 }
 
 disable_webmin_ssl() {
