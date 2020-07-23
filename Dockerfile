@@ -1,9 +1,11 @@
 FROM ubuntu:focal AS add-apt-repositories
 
 RUN apt-get update \
- && DEBIAN_FRONTEND=noninteractive apt-get install -y gnupg \
- && apt-key adv --fetch-keys http://www.webmin.com/jcameron-key.asc \
- && echo "deb http://download.webmin.com/download/repository sarge contrib" >> /etc/apt/sources.list
+    && apt-get -y upgrade \
+    && DEBIAN_FRONTEND=noninteractive apt-get install -y gnupg \
+    && apt-key adv --fetch-keys http://www.webmin.com/jcameron-key.asc \
+    && echo "deb http://download.webmin.com/download/repository sarge contrib" >> /etc/apt/sources.list \
+    && apt-get autoremove -y
 
 FROM ubuntu:focal
 
@@ -23,7 +25,8 @@ RUN rm -rf /etc/apt/apt.conf.d/docker-gzip-indexes \
       webmin \
       nginx \
       nginx-extras \
-    && rm -rf /var/lib/apt/lists/*
+    && rm -rf /var/lib/apt/lists/* \
+    && apt-get autoremove -y
 
 COPY entrypoint.sh /sbin/entrypoint.sh
 
