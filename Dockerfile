@@ -13,6 +13,7 @@ FROM ubuntu:focal
 LABEL maintainer="Khalid Ait Bellahs <kaitbellahs@gmail.com>"
 
 ENV BIND_USER=bind \
+    NGINX_USER=www-data \
     DATA_DIR=/data
 
 COPY --from=add-apt-repositories /etc/apt/trusted.gpg /etc/apt/trusted.gpg

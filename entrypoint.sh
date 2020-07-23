@@ -53,6 +53,8 @@ create_bind_data_dir() {
   fi
   rm -rf /var/lib/bind
   ln -sf ${BIND_DATA_DIR}/lib /var/lib/bind
+
+  
 }
 
 create_webmin_data_dir() {
@@ -70,15 +72,36 @@ create_webmin_data_dir() {
 
 create_nginx_data_dir() {
   mkdir -p ${NGINX_DATA_DIR}
-  chmod -R 0755 ${NGINX_DATA_DIR}
-  chown -R root:root ${NGINX_DATA_DIR}
 
-  # populate the default nginx configuration if it does not exist
+  # populate default nginx configuration if it does not exist
   if [ ! -d ${NGINX_DATA_DIR}/etc ]; then
     mv /etc/nginx ${NGINX_DATA_DIR}/etc
   fi
   rm -rf /etc/nginx
-  ln -sf ${WEBMIN_DATA_DIR}/etc /etc/nginx
+  ln -sf ${NGINX_DATA_DIR}/etc /etc/nginx
+  chmod -R 0775 ${NGINX_DATA_DIR}
+  chown -R ${NGINX_USER}:${NGINX_USER} ${NGINX_DATA_DIR}
+
+  if [ ! -d ${NGINX_DATA_DIR}/lib ]; then
+    mkdir -p ${NGINX_DATA_DIR}/lib
+    chown ${NGINX_USER}:${NGINX_USER} ${NGINX_DATA_DIR}/lib
+  fi
+  rm -rf /var/lib/nginx
+  ln -sf ${NGINX_DATA_DIR}/lib /var/lib/nginx
+
+  if [ ! -d ${NGINX_DATA_DIR}/share ]; then
+    mkdir -p ${NGINX_DATA_DIR}/share
+    chown ${NGINX_USER}:${NGINX_USER} ${NGINX_DATA_DIR}/share
+  fi
+  rm -rf /usr/share/nginx
+  ln -sf ${NGINX_DATA_DIR}/share /usr/share/nginx
+
+  if [ ! -d ${NGINX_DATA_DIR}/log ]; then
+    mkdir -p ${NGINX_DATA_DIR}/log
+    chown ${NGINX_USER}:${NGINX_USER} ${NGINX_DATA_DIR}/log
+  fi
+  rm -rf /var/log/nginx
+  ln -sf ${NGINX_DATA_DIR}/log /var/log/nginx
 }
 
 disable_webmin_ssl() {
