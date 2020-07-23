@@ -125,6 +125,7 @@ first_init() {
 create_pid_dir
 create_bind_data_dir
 create_bind_cache_dir
+create_nginx_data_dir
 
 # allow arguments to be passed to named
 if [[ ${1:0:1} = '-' ]]; then
@@ -139,14 +140,18 @@ fi
 if [[ -z ${1} ]]; then
   if [ "${WEBMIN_ENABLED}" == "true" ]; then
     create_webmin_data_dir
-    create_nginx_data_dir
     first_init
     set_root_passwd
     echo "Starting webmin..."
     /etc/init.d/webmin start
   fi
+  
+  echo "Starting nginx..."
+    /etc/init.d/nginx start
 
   echo "Starting named..."
+  echo ${EXTRA_ARGS}
+  echo "|...|"
   exec "$(command -v named)" -u ${BIND_USER} -g ${EXTRA_ARGS}
 else
   exec "$@"

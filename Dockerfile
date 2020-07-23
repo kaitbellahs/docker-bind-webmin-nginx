@@ -2,6 +2,7 @@ FROM ubuntu:focal AS add-apt-repositories
 
 RUN apt-get update \
     && apt-get -y upgrade \
+    && apt-get install apt-utils \
     && DEBIAN_FRONTEND=noninteractive apt-get install -y gnupg \
     && apt-key adv --fetch-keys http://www.webmin.com/jcameron-key.asc \
     && echo "deb http://download.webmin.com/download/repository sarge contrib" >> /etc/apt/sources.list \
@@ -9,7 +10,7 @@ RUN apt-get update \
 
 FROM ubuntu:focal
 
-LABEL maintainer="kaitbellahs@gmail.com"
+LABEL maintainer="Khalid Ait Bellahs <kaitbellahs@gmail.com>"
 
 ENV BIND_USER=bind \
     DATA_DIR=/data
@@ -36,4 +37,4 @@ EXPOSE 53/udp 53/tcp 10000/tcp 80/tcp
 
 ENTRYPOINT ["/sbin/entrypoint.sh"]
 
-CMD ["/usr/sbin/named", "systemctl start nginx"]
+CMD ["/usr/sbin/named"]
