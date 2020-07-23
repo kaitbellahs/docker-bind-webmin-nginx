@@ -73,23 +73,11 @@ create_nginx_data_dir() {
   mkdir -p ${NGINX_DATA_DIR}
 
   # populate default nginx configuration if it does not exist
-  if [ ! -d ${NGINX_DATA_DIR}/etc ]; then
-    mv /etc/nginx ${NGINX_DATA_DIR}/etc
+  if [ ! -d ${NGINX_DATA_DIR}/conf.d ]; then
+    mv /etc/nginx/conf.d ${NGINX_DATA_DIR}/conf.d
   fi
-  rm -rf /etc/nginx
-  ln -sf ${NGINX_DATA_DIR}/etc /etc/nginx
-
-  if [ ! -d ${NGINX_DATA_DIR}/lib ]; then
-    mv /var/lib/nginx ${NGINX_DATA_DIR}/lib
-  fi
-  rm -rf /var/lib/nginx
-  ln -sf ${NGINX_DATA_DIR}/lib /var/lib/nginx
-
-  if [ ! -d ${NGINX_DATA_DIR}/share ]; then
-    mv /usr/share/nginx ${NGINX_DATA_DIR}/share
-  fi
-  rm -rf /usr/share/nginx
-  ln -sf ${NGINX_DATA_DIR}/share /usr/share/nginx
+  rm -rf /etc/nginx/conf.d
+  ln -sf ${NGINX_DATA_DIR}/conf.d /etc/nginx/conf.d
 
   if [ ! -d ${NGINX_DATA_DIR}/log ]; then
     mv /var/log/nginx ${NGINX_DATA_DIR}/log
@@ -167,7 +155,7 @@ if [[ -z ${1} ]]; then
   fi
   
   echo "Starting nginx..."
-  ls -l /etc/nginx
+  ls -l /etc/nginx/conf.d
   /etc/init.d/nginx start
 
   echo "Starting named..."
