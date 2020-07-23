@@ -54,7 +54,6 @@ create_bind_data_dir() {
   rm -rf /var/lib/bind
   ln -sf ${BIND_DATA_DIR}/lib /var/lib/bind
 
-  
 }
 
 create_webmin_data_dir() {
@@ -99,7 +98,7 @@ create_nginx_data_dir() {
   ln -sf ${NGINX_DATA_DIR}/log /var/log/nginx
 
   chmod -R 0775 ${NGINX_DATA_DIR}
-  chown -R ${NGINX_USER}:${NGINX_USER} ${NGINX_DATA_DIR}
+  chown -R root:${NGINX_USER} ${NGINX_DATA_DIR}
 }
 
 disable_webmin_ssl() {
@@ -168,7 +167,8 @@ if [[ -z ${1} ]]; then
   fi
   
   echo "Starting nginx..."
-    /etc/init.d/nginx start
+  ls -l /etc/nginx
+  /etc/init.d/nginx start
 
   echo "Starting named..."
   echo ${EXTRA_ARGS}
