@@ -13,7 +13,7 @@ FROM ubuntu:focal
 LABEL maintainer="Khalid Ait Bellahs <kaitbellahs@gmail.com>"
 
 ENV BIND_USER=bind \
-    NGINX_USER=www-data \
+    # NGINX_USER=www-data \
     DATA_DIR=/data
 
 COPY --from=add-apt-repositories /etc/apt/trusted.gpg /etc/apt/trusted.gpg
@@ -24,9 +24,9 @@ RUN rm -rf /etc/apt/apt.conf.d/docker-gzip-indexes \
  && DEBIAN_FRONTEND=noninteractive apt-get update \
  && DEBIAN_FRONTEND=noninteractive apt-get install -y \
       bind9 bind9-host dnsutils \
+    #   nginx \
+    #   nginx-extras \
       webmin \
-      nginx \
-      nginx-extras \
     && rm -rf /var/lib/apt/lists/* \
     && DEBIAN_FRONTEND=noninteractive apt-get autoremove -y
 

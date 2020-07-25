@@ -2,23 +2,20 @@ version: "3"
 
 services:
   web:
-    image: "khalidait/khalid:tian_web"
-    build: .
+    image: "khalidait/khalid:tian_bind"
     ports:
       - "53:53/udp"
       - "53:53/tcp"
       - "10000:10000/tcp"
-      - "80:80/tcp"
-      - "443:443/tcp"
     volumes:
-      - webVolume:/data
+      - bindVolume:/data
     networks:
       - mainNetwork
     deploy:
       replicas: 1
 
 volumes:
-  webVolume:
+  bindVolume:
 
 networks:
   mainNetwork:

@@ -33,7 +33,7 @@ WEBMIN_INIT_REFERERS=${WEBMIN_INIT_REFERERS:-NONE}
 
 BIND_DATA_DIR=${DATA_DIR}/bind
 WEBMIN_DATA_DIR=${DATA_DIR}/webmin
-NGINX_DATA_DIR=${DATA_DIR}/nginx
+# NGINX_DATA_DIR=${DATA_DIR}/nginx
 
 create_bind_data_dir() {
   mkdir -p ${BIND_DATA_DIR}
@@ -69,25 +69,25 @@ create_webmin_data_dir() {
   ln -sf ${WEBMIN_DATA_DIR}/etc /etc/webmin
 }
 
-create_nginx_data_dir() {
-  mkdir -p ${NGINX_DATA_DIR}
+# create_nginx_data_dir() {
+#   mkdir -p ${NGINX_DATA_DIR}
 
-  # populate default nginx configuration if it does not exist
-  if [ ! -d ${NGINX_DATA_DIR}/conf.d ]; then
-    mv /etc/nginx/conf.d ${NGINX_DATA_DIR}/conf.d
-  fi
-  rm -rf /etc/nginx/conf.d
-  ln -sf ${NGINX_DATA_DIR}/conf.d /etc/nginx/conf.d
+#   # populate default nginx configuration if it does not exist
+#   if [ ! -d ${NGINX_DATA_DIR}/conf.d ]; then
+#     mv /etc/nginx/conf.d ${NGINX_DATA_DIR}/conf.d
+#   fi
+#   rm -rf /etc/nginx/conf.d
+#   ln -sf ${NGINX_DATA_DIR}/conf.d /etc/nginx/conf.d
 
-  if [ ! -d ${NGINX_DATA_DIR}/log ]; then
-    mv /var/log/nginx ${NGINX_DATA_DIR}/log
-  fi
-  rm -rf /var/log/nginx
-  ln -sf ${NGINX_DATA_DIR}/log /var/log/nginx
+#   if [ ! -d ${NGINX_DATA_DIR}/log ]; then
+#     mv /var/log/nginx ${NGINX_DATA_DIR}/log
+#   fi
+#   rm -rf /var/log/nginx
+#   ln -sf ${NGINX_DATA_DIR}/log /var/log/nginx
 
-  chmod -R 0775 ${NGINX_DATA_DIR}
-  chown -R root:${NGINX_USER} ${NGINX_DATA_DIR}
-}
+#   chmod -R 0775 ${NGINX_DATA_DIR}
+#   chown -R root:${NGINX_USER} ${NGINX_DATA_DIR}
+# }
 
 disable_webmin_ssl() {
   sed -i 's/ssl=1/ssl=0/g' /etc/webmin/miniserv.conf
@@ -133,7 +133,7 @@ first_init() {
 create_pid_dir
 create_bind_data_dir
 create_bind_cache_dir
-create_nginx_data_dir
+# create_nginx_data_dir
 
 # allow arguments to be passed to named
 if [[ ${1:0:1} = '-' ]]; then
@@ -154,13 +154,11 @@ if [[ -z ${1} ]]; then
     /etc/init.d/webmin start
   fi
   
-  echo "Starting nginx..."
-  ls -l /etc/nginx/conf.d
-  /etc/init.d/nginx start
+  # echo "Starting nginx..."
+  # ls -l /etc/nginx/conf.d
+  # /etc/init.d/nginx start
 
   echo "Starting named..."
-  echo ${EXTRA_ARGS}
-  echo "|...|"
   exec "$(command -v named)" -u ${BIND_USER} -g ${EXTRA_ARGS}
 else
   exec "$@"
