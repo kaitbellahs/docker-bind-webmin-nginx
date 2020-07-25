@@ -3,6 +3,7 @@ version: "3"
 services:
   web:
     image: "khalidait/khalid:tian_bind"
+    build: .
     ports:
       - "53:53/udp"
       - "53:53/tcp"
